@@ -1,13 +1,26 @@
 GET http://localhost:4000/users
 
 ###
-GET http://localhost:4000/users/1
+GET http://localhost:4000/users/3
 
 ###
 POST http://localhost:4000/new-user
+Content-Type: application/json
+
+{
+    "id":4,
+    "name":"vikas"
+}
+
 
 ###
-PUT http://localhost:4000/user/1
+PUT http://localhost:4000/user
+Content-Type: application/json
+
+{
+    "id":12,
+    "name":"ravi kumar"
+}
 
 ###
-DELETE http://localhost:4000/user/1
+DELETE http://localhost:4000/user/12
