@@ -86,3 +86,7 @@ userApp.delete("/user/:id", (req, res) => {
 
 //export userApp
 module.exports=userApp;
+
+
+
+

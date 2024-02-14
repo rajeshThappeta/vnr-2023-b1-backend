@@ -2,6 +2,22 @@
 const exp = require("express");
 const app = exp();
 
+//import mongo client
+const mc=require('mongodb').MongoClient
+//connect to mongodb server
+mc.connect('mongodb://localhost:27017')
+.then(client=>{
+  //get database object
+  const dbObj=client.db('vnrb1db')
+  //get collection object
+  const usersCollectionObj=dbObj.collection('userscollection')
+  console.log("DB connction success")
+})
+.catch(err=>{
+  console.log("DB connection error",err)
+})
+
+
 const userApp=require('./API/userApi')
 const productApp=require('./API/productApi')
 
