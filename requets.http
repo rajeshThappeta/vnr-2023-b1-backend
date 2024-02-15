@@ -3,15 +3,18 @@ GET http://localhost:4000/user-api/users
 ###
 GET http://localhost:4000/product-api/products
 ###
-GET http://localhost:4000/user-api/users/1
+
+GET http://localhost:4000/user-api/users/kiran
 
 ###
 POST http://localhost:4000/user-api/new-user
 Content-Type: application/json
 
 {
-    "id":4,
-    "name":"vikas"
+   
+    "name":"bhanu",
+    "age":31,
+    "city":"hyderabad"
 }
 
 
@@ -20,9 +23,10 @@ PUT http://localhost:4000/user-api/user
 Content-Type: application/json
 
 {
-    "id":12,
-    "name":"ravi kumar"
+    "name":"kiran",
+    "age":42,
+    "city":"bangalore"
 }
 
 ###
-DELETE http://localhost:4000/user-api/user/12
+DELETE http://localhost:4000/user-api/user/kiran

@@ -11,6 +11,9 @@ mc.connect('mongodb://localhost:27017')
   const dbObj=client.db('vnrb1db')
   //get collection object
   const usersCollectionObj=dbObj.collection('userscollection')
+  const productsCollectionObj=dbObj.collection('productscollection')
+  app.set('usersCollectionObj',usersCollectionObj)
+  app.set('productsCollectionObj',productsCollectionObj)
   console.log("DB connction success")
 })
 .catch(err=>{
@@ -34,4 +37,4 @@ app.use((err, req, res, next) => {
 });
 
 //assign port number
-app.listen(4000, () => console.log("server running on 4000..."));
+app.listen(4000, () => console.log("http server running on 4000..."));
