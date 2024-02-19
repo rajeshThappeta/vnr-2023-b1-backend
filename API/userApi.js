@@ -1,6 +1,8 @@
 //create mini-express app
 const exp = require("express");
 const userApp = exp.Router();
+const bcryptjs=require("bcryptjs")
+const jsonwebtoken=require('jsonwebtoken')
 
 let usersCollectionObj;
 userApp.use((req, res, next) => {
@@ -15,16 +17,63 @@ userApp.use(exp.json());
 
 //create user
 userApp.post("/new-user", async (req, res) => {
-
-  //user from client
-  const newUser = req.body;
-  //save to db
-  const dbres = await usersCollectionObj.insertOne(newUser);
-  if (dbres.acknowledged === true) {
+  
+  //get user resource from req
+  const newUser=req.body;
+  //check duplicate user by username
+  const dbUser=await usersCollectionObj.findOne({username:newUser.username})
+  //if user already existed
+  if(dbUser!==null){
+    res.send({message:"Username has  already taken"})
+  }else{
+    //hash the password
+    const hashedPassword=await bcryptjs.hash(newUser.password,6)
+    //replace plain pw with hased pw
+    newUser.password=hashedPassword;
+    //save user
+    await usersCollectionObj.insertOne(newUser)
     //send res
-    res.send({ message: "User created" });
+    res.send({message:"User created"})
   }
-});
+
+  });
+
+
+
+//user login
+userApp.post('/login',async(req,res)=>{
+  //get user crdentials obj
+  const userCredObj=req.body;
+  //verify username
+  const dbUser=await usersCollectionObj.findOne({username:userCredObj.username})
+  //if dbuser is null
+  if(dbUser===null){
+    res.send({message:"Invalid Username"})
+  }//if username is valid
+  else{
+   const status=await bcryptjs.compare(userCredObj.password,dbUser.password)
+   //if passwords are not matched
+   if(status===false){
+    res.send({message:"Invalid password"})
+   }//if passwords are also matched
+   else{
+      //create JWT token
+      const signedToken=jsonwebtoken.sign({username:dbUser.username},'sdgahjdgajshdga',{expiresIn:20})
+      //send token to client as res
+      res.send({message:"login success",token:signedToken})
+   }
+  }
+})
+
+
+
+
+
+
+
+
+
+
 
 //get all users
 userApp.get("/users", async (req, res) => {

@@ -12,9 +12,20 @@ Content-Type: application/json
 
 {
    
-    "name":"bhanu",
-    "age":31,
-    "city":"hyderabad"
+    "username":"kiran",
+    "password":"kiran",
+    "email":"kiran@mail.com"
+}
+
+###
+POST http://localhost:4000/user-api/login
+Content-Type: application/json
+
+{
+   
+    "username":"bhanu",
+    "password":"bhanu"
+   
 }
 
 
