@@ -3,6 +3,9 @@ const exp = require("express");
 const userApp = exp.Router();
 const bcryptjs=require("bcryptjs")
 const jsonwebtoken=require('jsonwebtoken')
+const verifyToken=require('../middlewares/verifyToken')
+
+
 
 let usersCollectionObj;
 userApp.use((req, res, next) => {
@@ -58,7 +61,7 @@ userApp.post('/login',async(req,res)=>{
    }//if passwords are also matched
    else{
       //create JWT token
-      const signedToken=jsonwebtoken.sign({username:dbUser.username},'sdgahjdgajshdga',{expiresIn:20})
+      const signedToken=jsonwebtoken.sign({username:dbUser.username},'abcdef',{expiresIn:20})
       //send token to client as res
       res.send({message:"login success",token:signedToken})
    }
@@ -76,7 +79,7 @@ userApp.post('/login',async(req,res)=>{
 
 
 //get all users
-userApp.get("/users", async (req, res) => {
+userApp.get("/users", verifyToken,async (req, res) => {
 
   //get all users
   const usersList = await usersCollectionObj.find().toArray();
@@ -119,6 +122,15 @@ userApp.delete("/user/:name", async (req, res) => {
   //send
   res.send({ message: "User removed" });
 });
+
+
+
+//protected route
+userApp.get('/protected',verifyToken,(req,res)=>{
+  res.send({message:"This is sensitive info"})
+})
+
+
 
 //export userApp
 module.exports = userApp;
